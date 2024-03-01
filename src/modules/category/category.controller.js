@@ -18,6 +18,7 @@ export const getsingleCategory = getSingleDocument(categoryModel)
 
 export const updateCategory = CatchAsyncError(async (req, res) => {
 
+    req.body.slug = slugify(req.body.name)
     let category = await categoryModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
     !category && res.status(404).json({ message: "category not found" })
     category && res.status(200).json({ message: "success", category })
