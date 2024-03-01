@@ -2,7 +2,7 @@ import express from 'express'
 import env from "dotenv"
 import { v2 as cloudinary } from 'cloudinary';
 import { DBConnection } from './database/dbConnection.js'
-import v1Router from "./src/Router/routes.js"
+import v1Router from "./src/router/routes.js"
 import { AppError } from './src/utils/error.handler.js'
 
 
