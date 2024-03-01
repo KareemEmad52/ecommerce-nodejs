@@ -12,6 +12,7 @@ export const Authenticate = CatchAsyncError(async (req, res, next) => {
             const { email } = data
 
             const user = await userModel.findOne({ email })
+            if(!user) throw new AppError("Invalid Token !",400)
             req.user = user
             next()
         } catch (error) {
