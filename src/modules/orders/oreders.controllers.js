@@ -20,7 +20,6 @@ export const getAllOrders = CatchAsyncError(async (req, res) => {
 export const makeCODorder = CatchAsyncError(async (req, res) => {
     const cart = await cartModel.findOne({ user_id: req.user.id });
 
-    console.log(cart.coupon_id?.discount);
 
     cart.products.forEach((product) => {
         if (product.product_id.stock < product.quantity) throw new AppError("Insufficient stock", 400);
@@ -54,6 +53,10 @@ export const makeCODorder = CatchAsyncError(async (req, res) => {
     }));
 
     await productModel.bulkWrite(bulkWriteOperations);
+
+
+
+    const deletedCart = await cartModel.findByIdAndDelete(cart._id)
 
     res.status(201).json({ order });
 });
@@ -112,4 +115,22 @@ export const makeOnlineOrder = async (data) => {
         isPaid: true,
         payment_type: "card"
     });
+
+
+
+    const bulkWriteOperations = cart.products.map(({ product_id: { _id }, quantity }) => ({
+        updateOne: {
+            filter: { _id },
+            update: {
+                $inc: {
+                    stock: -quantity
+                }
+            }
+        }
+    }));
+
+    await productModel.bulkWrite(bulkWriteOperations);
+
+
+    const deletedCart = await cartModel.findByIdAndDelete(cart._id)
 }
