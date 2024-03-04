@@ -5,6 +5,7 @@ import { AppError, CatchAsyncError } from "../../utils/error.handler.js";
 import orderModel from "../../../database/models/order.model.js";
 import cartModel from "../../../database/models/cart.model.js";
 import { Apifeature } from "../../utils/apiFeature.js";
+import { userModel } from '../../../database/models/user.model.js';
 
 dotenv.config()
 const stripe = new Stripe(process.env.STRIPE_SECRET);
@@ -83,4 +84,32 @@ export const makePaymentSession = CatchAsyncError(async (req, res) => {
     })
 
     res.status(200).json({ session })
-}) 
+})
+
+
+export const makeOnlineOrder = async (data) => {
+    const { customer_email } = data
+
+    const user = await userModel.findOne({ email: customer_email })
+
+    const cart = await cartModel.findOne({ user_id: user._id });
+
+    const orderProducts = cart.products.map(({ product_id: { title, price, priceAfterDiscount }, quantity }) => ({
+        product: {
+            title,
+            price,
+            priceAfterDiscount
+        },
+        quantity
+    }));
+
+    const order = await orderModel.create({
+        user_id: user._id,
+        products: orderProducts,
+        address: data.metadata.address,
+        phone: data.metadata.phone,
+        coupon: cart.coupon_id?.discount,
+        isPaid: true,
+        payment_type: "card"
+    });
+}
