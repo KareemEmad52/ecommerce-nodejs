@@ -75,7 +75,11 @@ export const makePaymentSession = CatchAsyncError(async (req, res) => {
         success_url: "https://kareememad52.github.io/ecommerce/",
         cancel_url: "https://kareememad52.github.io/ecommerce/",
         client_reference_id: cart._id,
-        customer_email: req.user.email
+        customer_email: req.user.email,
+        metadata: {
+            address: req.body.address,
+            phone: req.body.phone
+        }
     })
 
     res.status(200).json({ session })
