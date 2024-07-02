@@ -48,6 +48,29 @@ schema.pre(/find/, function (next) {
 	next()
 })
 
+schema.pre(/delete/i, async function(next){
+    const toBeDeletedUser = await userModel.findOne(this._conditions)
+    if(!toBeDeletedUser) return next()
+
+    await mongoose.model('image').findByIdAndDelete(toBeDeletedCategory.image)
+    next()
+})
+
+schema.pre(/update/i, async function(next){
+    if(!this._update.image) return next()
+    const toBeUpdateddUser = await userModel.findOne(this._conditions)
+    if(!toBeUpdateddUser) return next()
+
+    await mongoose.model('image').findByIdAndDelete(toBeUpdatesCategory.image)
+    next()
+})
+
+
+schema.pre(/find/, function(next){
+    this.populate('profilePicture',['path']);
+    next()
+})
+
 export const userModel = mongoose.model('user', schema)
 
 

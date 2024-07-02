@@ -31,7 +31,7 @@ export const addUser = CatchAsyncError(async (req, res) => {
         html: `<a href="${link}" target="_blank">press here to verify you email</a>`, // html body
     });
 
-    res.status(201).json({ message: "Please check your email " })
+    res.status(201).json({ status: "success",message: "Please check your email " ,user })
 
 
 })
