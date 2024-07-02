@@ -6,12 +6,14 @@ import { adduserSchema, delateUserSchema, loginSchema, updateUserSchema } from "
 import { Authenticate, Authorize } from "../../middleware/Auth.middlewares.js";
 import { getWishlist, updateWishlist } from "./wishlist.controller.js";
 import { updateWishlistSchema } from "./wishlist.validation.js";
+import { attachImage } from "../image/image.middleware.js";
+import { upload } from "../../middleware/upload.middleware.js";
 
 const router = Router()
 
 router
     .get('/', Authenticate, Authorize('admin', 'user'), getUser)
-    .post("/signup", validate(adduserSchema), uniqueEmail, addUser)
+    .post("/signup", upload.single('profilePicture'), validate(adduserSchema), uniqueEmail, attachImage('profilePicture'), addUser)
     .post("/login", validate(loginSchema), login)
 
 router.route("/verifyemail/:token")

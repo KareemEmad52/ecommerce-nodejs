@@ -15,10 +15,10 @@ export const getUser = CatchAsyncError(async (req, res) => {
 })
 
 export const addUser = CatchAsyncError(async (req, res) => {
-    const { email, password, name } = req.body;
+    const { email, password, name ,profilePicture} = req.body;
 
     const hashedPassword = bcrypt.hashSync(password, 5)
-    const user = await userModel.create({ email, password: hashedPassword, name })
+    const user = await userModel.create({ email, password: hashedPassword, name,profilePicture })
 
     const token = await jwt.sign({ email }, process.env.SECRET_KEY)
 

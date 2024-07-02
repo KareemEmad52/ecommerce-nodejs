@@ -8,7 +8,8 @@ export const adduserSchema = Joi.object({
 
     },
     params: {},
-    query: {}
+    query: {},
+    file : Joi.object().optional()
 })
 
 
