@@ -13,7 +13,7 @@ router
     .get("", getAllbrand)
     .post("",
         Authenticate,
-        Authorize('user', 'admin'),
+        Authorize('admin'),
         upload.single('image'),
         validate(addBrandSchema),
         attachImage('image'),
@@ -23,12 +23,12 @@ router
     .route("/:id")
     .get(validate(getSingleBrandSchema), getsinglebrand)
     .put(Authenticate,
-        Authorize('user', 'admin'),
+        Authorize('admin'),
         upload.single('image'),
         validate(updateBrandSchema),
         attachImage('image'),
         updatebrand)
-    .delete(Authenticate, Authorize('user', 'admin'), validate(deleteBrandSchema), deletebrand)
+    .delete(Authenticate, Authorize('admin'), validate(deleteBrandSchema), deletebrand)
 
 
 export default router

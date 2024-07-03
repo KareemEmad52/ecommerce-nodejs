@@ -14,7 +14,7 @@ router.use("/:id/subcategories", subcategoryRouter)
 router
     .get("", getAllCategory)
     .post("", Authenticate,
-        Authorize('user', 'admin'),
+        Authorize('admin'),
         upload.single('image'),
         validate(addCategorySchema),
         attachImage('image'),
@@ -24,12 +24,12 @@ router
     .route("/:id")
     .get(validate(getSingleCategorySchema), getsingleCategory)
     .put(Authenticate,
-        Authorize('user', 'admin'),
+        Authorize('admin'),
         upload.single('image'),
         validate(updateCategorySchema),
         attachImage('image'),
         updateCategory)
-    .delete(Authenticate, Authorize('user', 'admin'), validate(deleteCategorySchema), deleteCategory)
+    .delete(Authenticate, Authorize('admin'), validate(deleteCategorySchema), deleteCategory)
 
 
 export default router

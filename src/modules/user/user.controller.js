@@ -3,7 +3,6 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { userModel } from "../../../database/models/user.model.js";
 import { AppError, CatchAsyncError } from "../../utils/error.handler.js";
-import { transporter } from "../../utils/send.email.js";
 env.config()
 
 
@@ -24,14 +23,8 @@ export const addUser = CatchAsyncError(async (req, res) => {
 
     const link = `http://localhost:3000/api/v1/user/verifyemail/${token}`
 
-    const info = await transporter.sendMail({
-        from: 'no replay', // sender address
-        to: `${email}`, // list of receivers
-        subject: "Hello ✔", // Subject line
-        html: `<a href="${link}" target="_blank">press here to verify you email</a>`, // html body
-    });
 
-    res.status(201).json({ status: "success",message: "Please check your email " ,user })
+    res.status(201).json({ status: "success",user })
 
 
 })

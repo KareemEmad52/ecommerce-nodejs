@@ -12,7 +12,7 @@ const router = Router()
 router
     .get("", getAllproduct)
     .post("", Authenticate,
-        Authorize('user', 'admin'),
+        Authorize('admin'),
         upload.fields([
             { name: 'imgCover', maxCount: 1 },
             { name: 'images', maxCount: 10 },
@@ -26,7 +26,7 @@ router
     .route("/:id")
     .get(validate(getSingleProductSchema), getsingleproduct)
     .put(Authenticate,
-        Authorize('user', 'admin'),
+        Authorize('admin'),
         upload.fields([
             { name: 'imgCover', maxCount: 1 },
             { name: 'images', maxCount: 10 },
@@ -34,7 +34,7 @@ router
         validate(updateProductSchema),
         attachCoverImage(),
         updateproduct)
-    .delete(Authenticate, Authorize('user', 'admin'), validate(deleteProductSchema), deleteproduct)
+    .delete(Authenticate, Authorize('admin'), validate(deleteProductSchema), deleteproduct)
 
 
 export default router

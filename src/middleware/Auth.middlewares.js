@@ -24,7 +24,7 @@ export const Authenticate = CatchAsyncError(async (req, res, next) => {
 
 export const Authorize = (...roles) => {
     return CatchAsyncError(async (req, res, next) => {
-        if (!roles.includes(req.user.role)) throw new AppError("you are unauthorized .")
+        if (!roles.includes(req.user.role)) throw new AppError("you are unauthorized .",403)
         next()
     })
 }
