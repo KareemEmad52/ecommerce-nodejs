@@ -6,10 +6,11 @@ import v1Router from "./src/router/routes.js";
 import { AppError, CatchAsyncError } from "./src/utils/error.handler.js";
 import Stripe from "stripe";
 import { makeOnlineOrder } from "./src/modules/orders/oreders.controllers.js";
-
+import cors from 'cors'
 const app = express();
 const port = +process.env.PORT;
 env.config();
+app.use(cors());
 
 app.post(
     "/webhook",
