@@ -5,7 +5,7 @@ export class Apifeature {
         this.searchQuery = searchQuery
     }
 
-    pagination(pageSize = 5) {
+    pagination(pageSize = 7) {
         let page = +this.searchQuery?.page || 1
 		if (page < 1) page = 1
 		this.mongooseQuery = this.mongooseQuery.skip((page - 1) * pageSize).limit(pageSize)

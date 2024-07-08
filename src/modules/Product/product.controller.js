@@ -30,7 +30,7 @@ export const addproduct = CatchAsyncError(async (req, res, next) => {
 
 export const getAllproduct = CatchAsyncError(async (req, res) => {
 
-    let apifeature = new Apifeature(productModel.find(), req.query).pagination(2).sort().search().filter()
+    let apifeature = new Apifeature(productModel.find(), req.query).pagination(10).sort().search().filter()
 
     let document = await apifeature.mongooseQuery
     !document && res.status(404).json({ message: "document not found" })

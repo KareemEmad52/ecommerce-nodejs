@@ -76,6 +76,17 @@ schema.pre(/find/i, function (next) {
     next()
 })
 
+schema.pre(/find/i, function (next) {
+    this.populate({path:'category', select:'name -_id'});
+    next()
+})
+
+schema.pre(/find/i, function (next) {
+    this.populate({path:'brand', select:'name -_id'});
+    next()
+})
+
+
 schema.virtual('images', {
     ref: 'imageOnProduct',
     localField: '_id',
@@ -110,7 +121,7 @@ schema.pre(/delete/i, async function (next) {
 
 
 schema.pre(/update/i, async function (next) {
-    if(!this._update.imgCover) return next()
+    if (!this._update.imgCover) return next()
     const toBeUpdatedProduct = await productModel.findOne(this._conditions)
     if (!toBeUpdatedProduct) return next()
 
