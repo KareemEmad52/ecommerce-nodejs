@@ -29,13 +29,26 @@ export const addproduct = CatchAsyncError(async (req, res, next) => {
 })
 
 export const getAllproduct = CatchAsyncError(async (req, res) => {
+    // Create an instance of Apifeature with pagination, sorting, searching, and filtering
+    let apifeature = new Apifeature(productModel.find(), req.query).pagination(10).sort().search().filter();
 
-    let apifeature = new Apifeature(productModel.find(), req.query).pagination(10).sort().search().filter()
+    // Execute the query to get the documents
+    let document = await apifeature.mongooseQuery;
 
-    let document = await apifeature.mongooseQuery
-    !document && res.status(404).json({ message: "document not found" })
-    document && res.status(200).json({ message: "success", document })
-})
+    // Get the total count of documents without pagination
+    const totalDocuments = await productModel.countDocuments();
+
+    // Calculate the number of pages
+    const totalPages = Math.ceil(totalDocuments / 10);
+
+    // Check if documents are found and send the response with the number of pages
+    if (!document) {
+        res.status(404).json({ message: "document not found" });
+    } else {
+        res.status(200).json({ message: "success", document, totalPages : totalPages });
+    }
+});
+
 
 export const getsingleproduct = getSingleDocument(productModel)
 
