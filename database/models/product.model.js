@@ -77,12 +77,12 @@ schema.pre(/find/i, function (next) {
 })
 
 schema.pre(/find/i, function (next) {
-    this.populate({path:'category', select:'name -_id'});
+    this.populate({path:'category', select:'name '});
     next()
 })
 
 schema.pre(/find/i, function (next) {
-    this.populate({path:'brand', select:'name -_id'});
+    this.populate({path:'brand', select:'name '});
     next()
 })
 
