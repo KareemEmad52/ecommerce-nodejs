@@ -8,6 +8,7 @@ env.config()
 
 export const getUser = CatchAsyncError(async (req, res) => {
     const { _id } = req.user
+    
 
     const user = await userModel.findById(_id,['-password'])
     res.status(200).json({ user })

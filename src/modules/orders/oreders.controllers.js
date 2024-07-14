@@ -76,8 +76,8 @@ export const makePaymentSession = CatchAsyncError(async (req, res) => {
             quantity: 1
         }],
         mode: 'payment',
-        success_url: "https://kareememad52.github.io/ecommerce/",
-        cancel_url: "https://kareememad52.github.io/ecommerce/",
+        success_url: "https://shop-wave-electron-ecommerce.vercel.app/",
+        cancel_url: "https://shop-wave-electron-ecommerce.vercel.app/",
         client_reference_id: cart._id,
         customer_email: req.user.email,
         metadata: {
