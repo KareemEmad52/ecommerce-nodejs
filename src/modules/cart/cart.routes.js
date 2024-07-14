@@ -11,7 +11,7 @@ router
     .put(Authenticate, Authorize('admin', 'user'), assertCart, addToCart)
 router
     .route('/remove')
-    .delete(Authenticate, Authorize('admin', 'user'), assertCart, removeFromCart)
+    .put(Authenticate, Authorize('admin', 'user'), assertCart, removeFromCart)
 router
     .route('/coupon')
     .put(Authenticate, Authorize('admin', 'user'), assertCart, applyCoupon)
