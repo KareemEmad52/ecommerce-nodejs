@@ -67,3 +67,21 @@ export const applyCoupon = CatchAsyncError(async (req, res) => {
     await cart.save()
     res.json({ message: 'Coupon added successfully' })
 })
+
+
+export const removeProductFromCart = CatchAsyncError(async (req, res) => {
+    const { product_id } = req.body;
+    const cart = await cartModel.findOne({ user_id: req.user._id });
+
+    const productEntryIndex = cart.products.findIndex(
+        (entry) => entry.product_id._id.toString() === product_id
+    );
+
+    if (productEntryIndex === -1) throw new AppError('product doesn\'t exist', 404);
+
+    cart.products.splice(productEntryIndex, 1); // Remove the product from the array
+
+    await cart.save();
+
+    res.json({ message: 'Product removed successfully', cart });
+});

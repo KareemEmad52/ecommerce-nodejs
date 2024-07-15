@@ -40,3 +40,27 @@ export const getAllDocuments = (model) => {
         }
     });
 };
+
+
+export const getAllDocumentsWithoutPagenation = (model) => {
+    return CatchAsyncError(async (req, res) => {
+        // Create an instance of Apifeature with pagination, sorting, searching, and filtering
+        let apifeature = new Apifeature(model.find(), req.query).sort().search().filter();
+
+        // Execute the query to get the documents
+        let document = await apifeature.mongooseQuery;
+
+        // Get the total count of documents without pagination
+        const totalDocuments = await model.countDocuments();
+
+
+        // Calculate the number of pages
+        const totalPages = Math.ceil(totalDocuments / 10);
+        // Check if documents are found and send the response with the number of pages
+        if (!document) {
+            res.status(404).json({ message: "document not found" });
+        } else {
+            res.status(200).json({ message: "success", document, totalPages: totalPages });
+        }
+    });
+};

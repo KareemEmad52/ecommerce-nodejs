@@ -1,7 +1,7 @@
 import slugify from "slugify";
 import { CatchAsyncError } from "../../utils/error.handler.js";
 import { productModel } from "../../../database/models/product.model.js";
-import { deleteOne, getSingleDocument } from "../../handlers/handlers.js";
+import { deleteOne, getAllDocumentsWithoutPagenation, getSingleDocument } from "../../handlers/handlers.js";
 import imageOnProductModel from "../../../database/models/imageOnProduct.model.js";
 import { Apifeature } from "../../utils/apiFeature.js";
 import { makeImage } from "../image/image.utils.js";
@@ -82,5 +82,7 @@ export const updateproduct = CatchAsyncError(async (req, res) => {
     product && res.status(200).json({ message: "success", product })
 })
 
+
+export const getAllProductsWithoutPagenation = getAllDocumentsWithoutPagenation(productModel)
 
 export const deleteproduct = deleteOne(productModel)
