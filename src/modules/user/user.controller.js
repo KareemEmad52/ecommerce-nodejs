@@ -8,24 +8,20 @@ env.config()
 
 export const getUser = CatchAsyncError(async (req, res) => {
     const { _id } = req.user
-    
 
-    const user = await userModel.findById(_id,['-password'])
+
+    const user = await userModel.findById(_id, ['-password'])
     res.status(200).json({ user })
 })
 
 export const addUser = CatchAsyncError(async (req, res) => {
-    const { email, password, name ,profilePicture} = req.body;
+    const { email, password, name, profilePicture } = req.body;
 
     const hashedPassword = bcrypt.hashSync(password, 5)
-    const user = await userModel.create({ email, password: hashedPassword, name,profilePicture })
-
-    const token = await jwt.sign({ email }, process.env.SECRET_KEY)
-
-    const link = `http://localhost:3000/api/v1/user/verifyemail/${token}`
+    const user = await userModel.create({ email, password: hashedPassword, name, profilePicture })
 
 
-    res.status(201).json({ status: "success",user })
+    res.status(201).json({ status: "success", user })
 
 
 })
@@ -36,10 +32,10 @@ export const login = CatchAsyncError(async (req, res) => {
     const user = await userModel.findOne({ email })
 
 
-    if (!user || !bcrypt.compareSync(password, user.password)) throw new AppError("invalid email or password")
+    if (!user || !bcrypt.compareSync(password, user.password)) throw new AppError("Invalid email or password")
 
-    const { _id, name ,profilePicture } = user
-    const token = await jwt.sign({ email, _id, name ,profilePicture }, process.env.SECRET_KEY)
+    const { _id, name, profilePicture, role } = user
+    const token = await jwt.sign({ email, _id, name, profilePicture, role }, process.env.SECRET_KEY)
 
     res.status(200).json({ message: "Login Successfully ", token })
 
