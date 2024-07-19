@@ -3,6 +3,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { userModel } from "../../../database/models/user.model.js";
 import { AppError, CatchAsyncError } from "../../utils/error.handler.js";
+import cartModel from "../../../database/models/cart.model.js";
 env.config()
 
 
@@ -34,8 +35,15 @@ export const login = CatchAsyncError(async (req, res) => {
 
     if (!user || !bcrypt.compareSync(password, user.password)) throw new AppError("Invalid email or password")
 
+
+    const cart = await cartModel.find({ user_id: user._id })
+
+
+    const productCartCount = cart ? cart[0].products.length : 0;
+
+
     const { _id, name, profilePicture, role } = user
-    const token = await jwt.sign({ email, _id, name, profilePicture, role }, process.env.SECRET_KEY)
+    const token = await jwt.sign({ email, _id, name, profilePicture, role, productCartCount }, process.env.SECRET_KEY)
 
     res.status(200).json({ message: "Login Successfully ", token })
 
