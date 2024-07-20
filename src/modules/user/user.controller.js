@@ -68,10 +68,11 @@ export const verifyemail = CatchAsyncError(async (req, res) => {
 
 export const updateUser = CatchAsyncError(async (req, res) => {
     const { id } = req.params
-    const { name, password, email } = req.body
+    const { name, password, email, profilePicture } = req.body
     let hashedPassword;
     if (password) hashedPassword = bcrypt.hashSync(password, 5)
-    const user = await userModel.findByIdAndUpdate(id, { name, password: hashedPassword, email }, { new: true })
+    const user = await userModel.findByIdAndUpdate(id, { name, password: hashedPassword, email, profilePicture }, { new: true })
+    if (!user) throw new AppError("User not found!", 404)
     res.status(200).json({ message: "success", user })
 })
 

@@ -33,7 +33,7 @@ router
 
 router
     .route("/:id")
-    .put(validate(updateUserSchema), uniqueEmail, updateUser)
+    .put(upload.single('profilePicture'), validate(updateUserSchema), uniqueEmail, attachImage('profilePicture'), updateUser)
     .delete(validate(delateUserSchema), deleteUser)
 
 

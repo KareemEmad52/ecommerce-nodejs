@@ -33,7 +33,8 @@ export const updateUserSchema = Joi.object({
     params: {
         id: Joi.string().hex().length(24).required()
     },
-    query: {}
+    query: {},
+    file : Joi.object().optional()
 })
 
 export const delateUserSchema = Joi.object({

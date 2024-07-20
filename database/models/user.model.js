@@ -52,16 +52,16 @@ schema.pre(/delete/i, async function(next){
     const toBeDeletedUser = await userModel.findOne(this._conditions)
     if(!toBeDeletedUser) return next()
 
-    await mongoose.model('image').findByIdAndDelete(toBeDeletedCategory.image)
+    await mongoose.model('image').findByIdAndDelete(toBeDeletedUser.profilePicture)
     next()
 })
 
 schema.pre(/update/i, async function(next){
-    if(!this._update.image) return next()
+    if(!this._update.profilePicture) return next()
     const toBeUpdateddUser = await userModel.findOne(this._conditions)
     if(!toBeUpdateddUser) return next()
 
-    await mongoose.model('image').findByIdAndDelete(toBeUpdatesCategory.image)
+    await mongoose.model('image').findByIdAndDelete(toBeUpdateddUser.profilePicture)
     next()
 })
 
