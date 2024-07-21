@@ -73,15 +73,8 @@ export const updateUser = CatchAsyncError(async (req, res) => {
     if (password) hashedPassword = bcrypt.hashSync(password, 5)
     const user = await userModel.findByIdAndUpdate(id, { name, password: hashedPassword, email, profilePicture }, { new: true })
     if (!user) throw new AppError("User not found!", 404)
-    const cart = await cartModel.find({ user_id: user._id })
 
-
-    const productCartCount = cart ? cart[0].products.length : 0;
-
-
-    const { _id, name: newName, profilePicture: newPic, role } = user
-    const token = await jwt.sign({ email, _id, name: newName, profilePicture: newPic, role, productCartCount }, process.env.SECRET_KEY)
-    res.status(200).json({ message: "success", token })
+    res.status(200).json({ message: "success", user })
 })
 
 export const deleteUser = CatchAsyncError(async (req, res) => {
