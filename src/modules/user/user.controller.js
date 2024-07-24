@@ -39,7 +39,7 @@ export const login = CatchAsyncError(async (req, res) => {
     const cart = await cartModel.find({ user_id: user._id })
 
 
-    const productCartCount = cart ? cart[0].products.length : 0;
+    const productCartCount = cart ? (cart[0]?.products.length|| 0) : 0;
 
 
     const { _id, name, profilePicture, role } = user
