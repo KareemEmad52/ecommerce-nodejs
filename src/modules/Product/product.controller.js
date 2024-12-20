@@ -30,7 +30,7 @@ export const addproduct = CatchAsyncError(async (req, res, next) => {
 
 export const getAllproduct = CatchAsyncError(async (req, res) => {
     // Create an instance of Apifeature with pagination, sorting, searching, and filtering
-    let apifeature = new Apifeature(productModel.find(), req.query).pagination(10).sort().search().filter();
+    let apifeature = new Apifeature(productModel.find(), req.query).filter().categoryFilter().pagination(10).sort().search();
 
     // Execute the query to get the documents
     let document = await apifeature.mongooseQuery;
